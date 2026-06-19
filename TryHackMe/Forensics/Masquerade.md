@@ -44,8 +44,11 @@ Example:
 ## Scope
 
 **Target System / Network:** Event Log, Packet Capture <pcapng>
+
 **Rules of Engagement:** Malware analysis in an isolated environment
+
 **Assumptions:** Jim from Finance ran a script "apply critical security updates" from a phishing email. Unusual network traffic were observed. 
+
 **Limitations:** Analyze Event Log and Packet Capture and analyze malicious code in packets, but do not run any code outside the isolated environment.
 
 ## Objectives
