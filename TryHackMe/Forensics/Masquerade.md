@@ -38,7 +38,7 @@ Example:
 
 **Target System / Network:** Event Log, Packet Capture  
 **Rules of Engagement:** Malware analysis in an isolated environment  
-**Assumptions:** Jim from Finance ran a script "apply critical security updates" from a phishing email. Unusual network traffic were observed.  
+**Assumptions:** Jim from Finance ran a script "apply critical security updates" from a phishing email. Unusual network traffic was observed.  
 **Limitations:** Analyze Event Log and Packet Capture and analyze malicious code in packets, but do not run any code outside the isolated environment.  
 
 ## Objectives
@@ -85,11 +85,15 @@ Example:
 
 ## Approach
 
-Describe the process used during the exercise.
+First lets examine the Event Log  
+<img width="958" height="281" alt="image" src="https://github.com/user-attachments/assets/7b2c0654-a978-4a8b-ae65-90cdd5ad6e49" />
+Here we see that in the course of 21 seconds PowerShell was launched and ran several commands, likely due to an automated PowerShell script.  
+Let's investigate the logs:  
+The first three Information Level alerts just tells us that PowerShell was started with information on the affected User and Computer:  
+>User: S-1-5-21-753961636-1548247123-2641200033-1001
+>Computer: DESKTOP-I6C5C7M  
+The first Verbose alert is a simple script block creating a prompt to accept input into PowerShell
 
-Example:
-
-> The assessment followed a structured methodology: reconnaissance, enumeration, vulnerability identification, exploitation validation, post-exploitation analysis, privilege escalation, documentation, and defensive mapping.
 
 ## Phases
 
