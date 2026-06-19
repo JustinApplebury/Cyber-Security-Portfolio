@@ -13,14 +13,14 @@ Example:
 
 ## Executive Summary
 
-**Exercise Name:** <Challenge Name>  
-**Platform / Environment:** <TryHackMe / Hack The Box / CyberDefenders / DoD Lab / Internal Exercise>  
-**Exercise Type:** <CTF / Blue Team / Red Team / Purple Team / SOC Investigation / Malware Analysis / Forensics>  
-**Primary Domain:** <Network Defense / Web Exploitation / Endpoint Analysis / Threat Hunting / Incident Response / Forensics>  
-**Difficulty:** <Easy / Medium / Hard>  
+**Exercise Name:** Masquerade
+**Platform / Environment:** TryHackMe
+**Exercise Type:** Malware Analysis / Forensics
+**Primary Domain:** Network DefenseEndpoint Analysis / Threat Hunting / Incident Response / Forensics
+**Difficulty:** Medium
 **Date Completed:** <YYYY-MM-DD>  
 **Author:** Justin Applebury  
-**Classification / Handling:** <Unclassified / CUI / Internal Use / Training Only>  
+**Classification / Handling:** Unclassified / Training Only
 
 ### Mission Relevance
 
@@ -36,20 +36,24 @@ Example:
 
 ## Scope
 
-**Target System / Network:** `<IP / hostname / lab range>`  
-**Rules of Engagement:** `<Authorized actions, prohibited actions, time limits, constraints>`  
-**Assumptions:** `<Known starting conditions>`  
-**Limitations:** `<Tooling, access, or environment limitations>`  
+**Target System / Network:** Event Log, Packet Capture <pcapng>
+**Rules of Engagement:** Malware analysis in an isolated environment
+**Assumptions:** Jim from Finance ran a script "apply critical security updates" from a phishing email. Unusual network traffic were observed. 
+**Limitations:** Analyze Event Log and Packet Capture and analyze malicious code in packets, but do not run any code outside the isolated environment.
 
 ## Objectives
 
-- Identify exposed services and potential attack surface
-- Determine likely vulnerabilities or misconfigurations
-- Gain authorized access within exercise boundaries
-- Analyze adversary-relevant techniques
-- Document evidence, commands, and artifacts
-- Identify detection and mitigation opportunities
-- Map activity to relevant frameworks
+- Investigate what happened
+- Determine the impact
+- Identify how the attacker established control over the system
+- What external domain was contacted during script execution?
+- What encryption algorithm was used by the script?
+- What key was used to decrypt the second-stage payload?
+- What was the timestamp of the server response containing the payload?
+- What is the SHA-256 hash of the extracted and decrypted payload?
+- What remote URL did the client use to communicate with the victim machine?
+- Which encryption key and algorithm does the client use?
+- After determining the client's encryption, decrypt the commands the attacker executed on the victim and submit the flag.
 
 ---
 
