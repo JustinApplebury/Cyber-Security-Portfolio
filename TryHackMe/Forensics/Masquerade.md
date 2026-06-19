@@ -14,12 +14,19 @@ Example:
 ## Executive Summary
 
 **Exercise Name:** Masquerade
+
 **Platform / Environment:** TryHackMe
+
 **Exercise Type:** Malware Analysis / Forensics
+
 **Primary Domain:** Network DefenseEndpoint Analysis / Threat Hunting / Incident Response / Forensics
+
 **Difficulty:** Medium
+
 **Date Completed:** <YYYY-MM-DD>  
+
 **Author:** Justin Applebury  
+
 **Classification / Handling:** Unclassified / Training Only
 
 ### Mission Relevance
