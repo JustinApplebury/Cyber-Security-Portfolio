@@ -116,10 +116,12 @@ A quick rundown is that **join()** will concatinate the individual strings, and 
   
 I'm going to reformat this portion of code to make it more readable.  
 
->    $b = for($x=0; $x -lt $h.Length; $x+=2)
+>````
+>     $b = for($x=0; $x -lt $h.Length; $x+=2)
 >    {
 >        [Convert]::ToByte($h.Substring($x, 2), 16)
 >    }
+>````
 
 This is a simple code block that is converting every two hex characters into a byte. 
 
