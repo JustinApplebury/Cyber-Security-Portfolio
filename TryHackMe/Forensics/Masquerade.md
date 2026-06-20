@@ -84,6 +84,7 @@ Example:
 # 4. Methodology
 
 ## Approach
+## Event Log
 
 First lets examine the Event Log  
   
@@ -160,8 +161,14 @@ Let's reformat this into something more readable than a long string of character
 Finally this takes the decrypted payload and saves it to the TEMP directory as amdfendrsr.exe and executes it.  
 
 
+## Packet Capture
 
+The Packet Capture that we have has 4342 packets in total, far too many to look at one at a time, so we will use Wireshark to help us filter down and find the important packets.  
+We have a few different ways to filter and search, we can look at the same timeframe as the Windows Log, or look for the filename amdfendrsr.exe, me personally I'm going to filter out DNS packets and look for the malicious URL.  
 
+<img width="1261" height="293" alt="image" src="https://github.com/user-attachments/assets/bb345bdb-8e75-4d9e-a0f4-1d5507e28851" />  
+
+  Here we find the DNS query and response for the malicious URL. And the resolved IP address 34[.]174[.]85[.]91
 
 
 ## Phases
