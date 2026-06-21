@@ -175,7 +175,8 @@ Now lets filter out all packets that are coming to and and from the malicious IP
 Let's put this into CyberChef and see if our analysis of the Event Log is correct about the secret key and decrypting the payload:  
 <img width="1913" height="826" alt="image" src="https://github.com/user-attachments/assets/468e493e-0dfd-4057-b528-88fad95e1721" />  
 Let's go ahead and find the SHA-256 Hash of this payload, this can be used to update our IDS and to verify the payload in other possibly infected systems.  
-<img width="1102" height="532" alt="image" src="https://github.com/user-attachments/assets/222e20fd-b3e1-42fa-be0f-ebd59b5530db" />
+<img width="1093" height="527" alt="image" src="https://github.com/user-attachments/assets/406a675d-3bc6-4c54-aa59-df1b1c9e3430" />
+
 
 
 This confirms that this is an executable, however it's compiled and not raw code, so lets see if any of the strings stand out from the rest.
