@@ -197,7 +197,9 @@ This appears to be a beacon call to a Command and Control (C2) server as this is
 
 Let's continue with the next stream: tcp.stream eq 44
 <img width="848" height="713" alt="image" src="https://github.com/user-attachments/assets/7dfe2540-617c-4a14-a649-73d09a319144" />  
-The important thing to note with this stream is the headers, they are using the same sessionid from earlier and the infected system is still connecting to the malicious server 34[.]174[.]57[.]99. The Etag happens to be the SHA-1 hash of the html body. And looking at the html body it appears to be an exact copy of the Google homepage, however it's not coming from google, it's coming from the C2 server.  
+The important thing to note with this stream is the headers, they are using the same sessionid from earlier and the infected system is still connecting to the malicious server <details><summary>Question 6 SPOILER</summary>34[.]174[.]57[.]99</details>.  
+The Etag happens to be the SHA-1 hash of the html body.  
+And looking at the html body it appears to be an exact copy of the Google homepage, however it's not coming from google, it's coming from the C2 server.  
 This appears to repeat on 15 second intervals which appears to indicate a beacon single to ensure that the C2Client is still connected and waiting for a command. 
 After a few of these beacon calls we get an interesting GET request for an image with an unusually large GUID:  
 <img width="844" height="724" alt="image" src="https://github.com/user-attachments/assets/0acce5b1-d141-4757-8302-d20ad1d51597" />  
