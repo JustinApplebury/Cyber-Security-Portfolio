@@ -168,49 +168,49 @@ We have a few different ways to filter and search, we can look at the same timef
 
 <img width="1261" height="293" alt="image" src="https://github.com/user-attachments/assets/bb345bdb-8e75-4d9e-a0f4-1d5507e28851" />  
 
-  Here we find the DNS query and response for the malicious URL. And the resolved IP address **34[.]174[.]85[.]91**  
-  Now lets filter out all packets that are coming to and and from the malicious IP address above. We see there is a single TCP connection and if we follow the TCP stream we are given this:  
-  <img width="860" height="818" alt="image" src="https://github.com/user-attachments/assets/d0a19d02-7ef8-4641-8322-970e520b8fdd" />  
+Here we find the DNS query and response for the malicious URL. And the resolved IP address **34[.]174[.]85[.]91**  
+Now lets filter out all packets that are coming to and and from the malicious IP address above. We see there is a single TCP connection and if we follow the TCP stream we are given this:  
+<img width="860" height="818" alt="image" src="https://github.com/user-attachments/assets/d0a19d02-7ef8-4641-8322-970e520b8fdd" />  
 
-    Let's put this into CyberChef and see if our analysis of the Event Log is correct about the secret key and decrypting the payload:  
-    <img width="1913" height="826" alt="image" src="https://github.com/user-attachments/assets/468e493e-0dfd-4057-b528-88fad95e1721" />  
-    Let's go ahead and find the SHA-256 Hash of this payload, this can be used to update our IDS and to verify the payload in other possibly infected systems.  
-    <img width="1102" height="532" alt="image" src="https://github.com/user-attachments/assets/222e20fd-b3e1-42fa-be0f-ebd59b5530db" />
+Let's put this into CyberChef and see if our analysis of the Event Log is correct about the secret key and decrypting the payload:  
+<img width="1913" height="826" alt="image" src="https://github.com/user-attachments/assets/468e493e-0dfd-4057-b528-88fad95e1721" />  
+Let's go ahead and find the SHA-256 Hash of this payload, this can be used to update our IDS and to verify the payload in other possibly infected systems.  
+<img width="1102" height="532" alt="image" src="https://github.com/user-attachments/assets/222e20fd-b3e1-42fa-be0f-ebd59b5530db" />
 
 
-    This confirms that this is an executable, however it's compiled and not raw code, so lets see if any of the strings stand out from the rest.
-    <img width="283" height="259" alt="image" src="https://github.com/user-attachments/assets/a8fd034e-4837-4c04-9cc1-f9545cbbaa1d" />
-    This definitely stands out from the rest, we will take note of this and see if anything comes up in further Packet Capture analysis relating to "Trevor" and/or C2 (command and control).  
-    <img width="942" height="176" alt="image" src="https://github.com/user-attachments/assets/01f6bdcc-35b7-49f5-9a26-f6c2658c847a" />  
-    <img width="944" height="76" alt="image" src="https://github.com/user-attachments/assets/586b66f9-82e0-4bd6-9bd7-58df0b48ef1d" />  
-    This is hiding from strings analysis by having everything seperated by NULL characters. Lets go ahead and extract all these individual characters into something more readable.  
-    <img width="635" height="202" alt="image" src="https://github.com/user-attachments/assets/994fdc85-49c1-4ac9-a82a-b9032cd76a71" />  
-    From this we can see what is likely the IP address of the C2Server and what is likely the secret key used to encrypt/decrypt communication between the client and server.  
-    Also we can see that they are using legacy browser headers to hide the traffic and ultimately the last bit is telling us that this C2 is designed to run commands directly to cmd.exe and it's using /Q Quiet Mode, /c is running commands that are in {0} and it's directing stderr to stdout.
+This confirms that this is an executable, however it's compiled and not raw code, so lets see if any of the strings stand out from the rest.
+<img width="283" height="259" alt="image" src="https://github.com/user-attachments/assets/a8fd034e-4837-4c04-9cc1-f9545cbbaa1d" />
+This definitely stands out from the rest, we will take note of this and see if anything comes up in further Packet Capture analysis relating to "Trevor" and/or C2 (command and control).  
+<img width="942" height="176" alt="image" src="https://github.com/user-attachments/assets/01f6bdcc-35b7-49f5-9a26-f6c2658c847a" />  
+<img width="944" height="76" alt="image" src="https://github.com/user-attachments/assets/586b66f9-82e0-4bd6-9bd7-58df0b48ef1d" />  
+This is hiding from strings analysis by having everything seperated by NULL characters. Lets go ahead and extract all these individual characters into something more readable.  
+<img width="635" height="202" alt="image" src="https://github.com/user-attachments/assets/994fdc85-49c1-4ac9-a82a-b9032cd76a71" />  
+From this we can see what is likely the IP address of the C2Server and what is likely the secret key used to encrypt/decrypt communication between the client and server.  
+Also we can see that they are using legacy browser headers to hide the traffic and ultimately the last bit is telling us that this C2 is designed to run commands directly to cmd.exe and it's using /Q Quiet Mode, /c is running commands that are in {0} and it's directing stderr to stdout.
 
-    Before we continue, lets do a little OSINT research into TrevorC2, after a quick google search this appears to be a C2 written by trustedsec/Dave Kennedy @HackingDave. The important piece is that the encrypted payload is Base64 encoded and AES encrypted using a key, likely the one we saw above.
+Before we continue, lets do a little OSINT research into TrevorC2, after a quick google search this appears to be a C2 written by trustedsec/Dave Kennedy @HackingDave. The important piece is that the encrypted payload is Base64 encoded and AES encrypted using a key, likely the one we saw above.
 
-    Next let's see what network traffic happens immediately after this payload is downloaded. I do this by looking at tcp.stream eq 43
-    <img width="820" height="280" alt="image" src="https://github.com/user-attachments/assets/ba9816cc-3dba-4433-8bd0-10cddfe7d844" />  
-    This appears to be a beacon call to a Command and Control (C2) server as this is not a normal GUID. The Etag happens to be the SHA-1 hash of an empty string, and the "Content-Length:0" says the server responded with essentially nothing. This is indicative of a server acknowledging the C2 beacon call. Finally the sessionid appears to be a randomly generated identifier so that the C2 can identify any future traffic from the compromised endpoint.  
+Next let's see what network traffic happens immediately after this payload is downloaded. I do this by looking at tcp.stream eq 43
+<img width="820" height="280" alt="image" src="https://github.com/user-attachments/assets/ba9816cc-3dba-4433-8bd0-10cddfe7d844" />  
+This appears to be a beacon call to a Command and Control (C2) server as this is not a normal GUID. The Etag happens to be the SHA-1 hash of an empty string, and the "Content-Length:0" says the server responded with essentially nothing. This is indicative of a server acknowledging the C2 beacon call. Finally the sessionid appears to be a randomly generated identifier so that the C2 can identify any future traffic from the compromised endpoint.  
 
-    Let's continue with the next stream: tcp.stream eq 44
-    <img width="848" height="713" alt="image" src="https://github.com/user-attachments/assets/7dfe2540-617c-4a14-a649-73d09a319144" />  
-    The important thing to note with this stream is the headers, they are using the same sessionid from earlier and the infected system is still connecting to the malicious server 34[.]174[.]57[.]99. The Etag happens to be the SHA-1 hash of the html body. And looking at the html body it appears to be an exact copy of the Google homepage, however it's not coming from google, it's coming from the C2 server.  
-    This appears to repeat on 15 second intervals which appears to indicate a beacon single to ensure that the C2Client is still connected and waiting for a command. 
-    After a few of these beacon calls we get an interesting GET request for an image with an unusually large GUID:  
-    <img width="844" height="724" alt="image" src="https://github.com/user-attachments/assets/0acce5b1-d141-4757-8302-d20ad1d51597" />  
-    The GUID is encoded in Base64 twice and given the OSINT we did earlier we know this is encrypted with AES.  
-    Now the key we found earlier when inspecting the executable is 34 bytes long, but a common method of converting any pass key into a 32 byte key is to take the SHA-256 of the key.  
-    The other portion we need to decrypt AES is the IV, and I'll assume the first 32 bytes of the payload is the IV. Let's run this through CyberChef  
-    <img width="1164" height="890" alt="image" src="https://github.com/user-attachments/assets/81ecf186-afda-4829-b696-a4e924acda0f" />  
-    Aha! We see here that this C2 just extracted information from the desktop. Now lets run all the different TCP streams that have the same "guid=" GET command.  
-    <img width="1303" height="197" alt="image" src="https://github.com/user-attachments/assets/7fa45e43-4907-47bf-a9bc-74a5c6de0e80" />  
-    Here are the results of filtering for these criteria. Lets go ahead and decrypt them all.  
-    The first one just defines the &magic_hostname=DESKTOP-I6C5C7M  
-    The second one is above, and the third one shows us the result of ipconfig /all  
-    The last one gives us the flag we need for the final question in the CTF challenge.
-    <img width="1169" height="657" alt="image" src="https://github.com/user-attachments/assets/eef55fb0-395b-438f-8749-5549e954b497" />
+Let's continue with the next stream: tcp.stream eq 44
+<img width="848" height="713" alt="image" src="https://github.com/user-attachments/assets/7dfe2540-617c-4a14-a649-73d09a319144" />  
+The important thing to note with this stream is the headers, they are using the same sessionid from earlier and the infected system is still connecting to the malicious server 34[.]174[.]57[.]99. The Etag happens to be the SHA-1 hash of the html body. And looking at the html body it appears to be an exact copy of the Google homepage, however it's not coming from google, it's coming from the C2 server.  
+This appears to repeat on 15 second intervals which appears to indicate a beacon single to ensure that the C2Client is still connected and waiting for a command. 
+After a few of these beacon calls we get an interesting GET request for an image with an unusually large GUID:  
+<img width="844" height="724" alt="image" src="https://github.com/user-attachments/assets/0acce5b1-d141-4757-8302-d20ad1d51597" />  
+The GUID is encoded in Base64 twice and given the OSINT we did earlier we know this is encrypted with AES.  
+Now the key we found earlier when inspecting the executable is 34 bytes long, but a common method of converting any pass key into a 32 byte key is to take the SHA-256 of the key.  
+The other portion we need to decrypt AES is the IV, and I'll assume the first 32 bytes of the payload is the IV. Let's run this through CyberChef  
+<img width="1164" height="890" alt="image" src="https://github.com/user-attachments/assets/81ecf186-afda-4829-b696-a4e924acda0f" />  
+Aha! We see here that this C2 just extracted information from the desktop. Now lets run all the different TCP streams that have the same "guid=" GET command.  
+<img width="1303" height="197" alt="image" src="https://github.com/user-attachments/assets/7fa45e43-4907-47bf-a9bc-74a5c6de0e80" />  
+Here are the results of filtering for these criteria. Lets go ahead and decrypt them all.  
+The first one just defines the &magic_hostname=DESKTOP-I6C5C7M  
+The second one is above, and the third one shows us the result of ipconfig /all  
+The last one gives us the flag we need for the final question in the CTF challenge.
+<img width="1169" height="657" alt="image" src="https://github.com/user-attachments/assets/eef55fb0-395b-438f-8749-5549e954b497" />
 
 
 
