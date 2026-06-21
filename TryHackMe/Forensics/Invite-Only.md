@@ -1,4 +1,5 @@
 # Cyber Exercise Writeup: TryHackMe Invite-Only
+## https://tryhackme.com/room/invite-only
 
 ## BLUF
 
