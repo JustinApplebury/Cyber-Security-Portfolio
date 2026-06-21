@@ -180,12 +180,12 @@ Let's go ahead and find the SHA-256 Hash of this payload, this can be used to up
 
 
 This confirms that this is an executable, however it's compiled and not raw code, so lets see if any of the strings stand out from the rest.
-<img width="283" height="259" alt="image" src="https://github.com/user-attachments/assets/a8fd034e-4837-4c04-9cc1-f9545cbbaa1d" />
+<img width="283" height="259" alt="image" src="https://github.com/user-attachments/assets/a8fd034e-4837-4c04-9cc1-f9545cbbaa1d" />  
 This definitely stands out from the rest, we will take note of this and see if anything comes up in further Packet Capture analysis relating to "Trevor" and/or C2 (command and control).  
 <img width="942" height="176" alt="image" src="https://github.com/user-attachments/assets/01f6bdcc-35b7-49f5-9a26-f6c2658c847a" />  
 <img width="944" height="76" alt="image" src="https://github.com/user-attachments/assets/586b66f9-82e0-4bd6-9bd7-58df0b48ef1d" />  
 This is hiding from strings analysis by having everything seperated by NULL characters. Lets go ahead and extract all these individual characters into something more readable.  
-<img width="635" height="202" alt="image" src="https://github.com/user-attachments/assets/994fdc85-49c1-4ac9-a82a-b9032cd76a71" />  
+<img width="628" height="196" alt="image" src="https://github.com/user-attachments/assets/8100396b-8bd8-4162-9d9f-a978dcf65d8f" />  
 From this we can see what is likely the IP address of the C2Server and what is likely the secret key used to encrypt/decrypt communication between the client and server.  
 Also we can see that they are using legacy browser headers to hide the traffic and ultimately the last bit is telling us that this C2 is designed to run commands directly to cmd.exe and it's using /Q Quiet Mode, /c is running commands that are in {0} and it's directing stderr to stdout.
 
