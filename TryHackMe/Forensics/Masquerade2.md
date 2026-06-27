@@ -10,18 +10,18 @@ Follow-on packet capture analysis showed the payload communicating with a comman
 
 ## Key Findings
 
-| Finding              | Value                                  |
-| -------------------- | -------------------------------------- |
-| Initial script       | `updates.ps1`                          |
-| Download URL         | `hxxp://api-edgecloud[.]xyz/amd[.]bin` |
-| RC4 key              | `X9vT3pL2QwE8xR6ZkYhC4s`               |
-| Dropped payload      | `%TEMP%\amdfendrsr.exe`                |
-| Payload behavior     | C2 client / command runner             |
-| C2 server            | `34[.]174[.]57[.]99`                   |
-| C2 endpoint          | `/images?guid=`                        |
-| Decoy page           | Fake Google homepage served by the C2  |
-| C2 command execution | `cmd.exe /Q /c {0} 2>&1`               |
-| Notable tool family  | TrevorC2-style traffic                 |
+| Finding              | Value                                                                            |
+| -------------------- | -------------------------------------------------------------------------------- |
+| Initial script       | `updates.ps1`                                                                    |
+| Download URL         | `hxxp://api-edgecloud[.]xyz/amd[.]bin`                                           |
+| RC4 key              | <details><summary>Question 3 Spoiler</summary>`X9vT3pL2QwE8xR6ZkYhC4s`</details> |
+| Dropped payload      | `%TEMP%\amdfendrsr.exe`                                                          |
+| Payload behavior     | C2 client / command runner                                                       |
+| C2 server            | <details><summary>Question 6 Spoiler</summary>`34[.]174[.]57[.]99`</details>     |
+| C2 endpoint          | `/images?guid=`                                                                  |
+| Decoy page           | Fake Google homepage served by the C2                                            |
+| C2 command execution | `cmd.exe /Q /c {0} 2>&1`                                                         |
+| Notable tool family  | TrevorC2-style traffic                                                           |
 
 ---
 
