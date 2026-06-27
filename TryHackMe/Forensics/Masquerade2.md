@@ -348,19 +348,19 @@ The strings recovered from the payload are consistent with that style of operati
 * Command execution through `cmd.exe`.
 
 The key recovered from strings was:
-
+<details><summary>Question 7 Spoiler</summary>
 ```text
-<details><summary>Question 7 Spoiler</summary>M4squ3r4d3Th3P4ck3tSt34lthM0d31337</details>
+M4squ3r4d3Th3P4ck3tSt34lthM0d31337
 ```
-
+</details>
 This value is 34 bytes long, which is not a valid raw AES key length. AES keys must be 16, 24, or 32 bytes.
 
 A common way to convert a passphrase into a valid AES-256 key is to take the SHA-256 hash of the passphrase.
-
+<details><summary>Question 7 Spoiler</summary>
 ```text
-<details><summary>Question 7 Spoiler</summary>SHA256("M4squ3r4d3Th3P4ck3tSt34lthM0d31337")</details>
+SHA256("M4squ3r4d3Th3P4ck3tSt34lthM0d31337")
 ```
-
+</details>
 This produces a 32-byte value suitable for AES-256.
 
 ---
