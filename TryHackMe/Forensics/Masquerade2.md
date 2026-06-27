@@ -483,11 +483,11 @@ Based on the earlier TrevorC2 research and the payload strings, the data appears
 3. AES encrypted.
 
 The AES key was derived by taking the SHA-256 hash of the recovered passphrase:
-
+<details><summary>Question 7 Spoiler</summary>
 ```text
-<details><summary>Question 7 Spoiler</summary>M4squ3r4d3Th3P4ck3tSt34lthM0d31337</details>
+M4squ3r4d3Th3P4ck3tSt34lthM0d31337
 ```
-
+</details>
 For AES-CBC-style decryption, an IV is also required. In this case, the IV appears to be taken from the beginning of the encrypted payload. In CyberChef, this was handled by extracting the initial IV material and decrypting the remaining ciphertext.
 
 <img width="1164" height="890" alt="CyberChef AES decrypt of C2 payload" src="https://github.com/user-attachments/assets/81ecf186-afda-4829-b696-a4e924acda0f" />
