@@ -132,7 +132,7 @@ ftp <TARGET_IP>
 ```
 
 <figure>
-<img width="434" height="209" alt="image" src="https://github.com/user-attachments/assets/aeb53d98-a7ca-4d84-90b8-8d9dba6aa543" />  
+<img width="434" height="209" alt="image" src="https://github.com/user-attachments/assets/aeb53d98-a7ca-4d84-90b8-8d9dba6aa543" />  <br>
 <figcaption>Figure 2. Anonymous FTP login to the target service.</figcaption>
 </figure>
 
