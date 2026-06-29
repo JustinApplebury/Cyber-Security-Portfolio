@@ -101,7 +101,65 @@ Deadend for now, we don't have permission to make ps executable at the moment, l
 <img width="962" height="233" alt="image" src="https://github.com/user-attachments/assets/2aaf4c8a-7f80-474e-bf3e-7c0d9b65dd86" />
 Here I run two commands:
 ls -ld /opt /opt/dev /opt/dev/bin shows me who the owner of the actual folder is, root owns /opt but dev_user owns /opt/dev and /opt/dev/bin including the group which we have access to.
-find /opt/dev -maxdepth 3 -ls 2>/dev/null searches everything inside /opt/dev to a depth of 
+find /opt/dev -maxdepth 3 -ls 2>/dev/null searches everything inside /opt/dev to a depth of 3 and we find an interesting shell script called backup.sh which is already executable so we don't have to worry about not being able to change it's permissions.
+<img width="519" height="87" alt="image" src="https://github.com/user-attachments/assets/7d047c8d-e852-4b3c-8311-b5bcc0959ff0" />
+It looks like it's just TARing the recon_user folder into a backup file. Let's modify it and see if it triggers.
+<img width="857" height="20" alt="image" src="https://github.com/user-attachments/assets/2559a024-e0a4-43e1-abbe-c42200a207fe" />
+echo just takes the input and outputs it, however we are appending it to the file /opt/dev/backup.sh
+id > /tmp/dev_backup_id.txt is just creating a file in /tmp/ which should hopefully show us the id of dev_user who we want to escalate to using this script
+<img width="728" height="63" alt="image" src="https://github.com/user-attachments/assets/5f802272-9e45-4ddc-98be-22ad89b0e94f" />
+Success, the canary worked and we see that dev_user executed the script. Now lets use this script to create a bash shell with dev_user's priveleges.
+<img width="1523" height="503" alt="image" src="https://github.com/user-attachments/assets/361c6666-7f5f-41fa-b039-c4e44286a961" />
+Now we add the payload to the script:
+echo 'cp /bin/bash /tmp/devbash; chmod 4755 /tmp/devbash' These two commands copy the /bin/bash file to /tmp/devbash and changes the permissions to 4755 essentially making it executable. This is ammended to the end of the script >> /opt/dev/backup.sh
+I run ls -lisa /tmp to see if devbash is created, and success it is!
+Let's run it and see if we gain dev_user priveleges.
+<img width="1138" height="132" alt="image" src="https://github.com/user-attachments/assets/03e5cf94-f60d-49f6-9c04-9c6b2c902947" />
+Success! We are dev_ops and completed our first escalation. Grab that flag at /home/dev_user/flag.txt
+Now we can change the permissions of the ps file we found earlier that is being run by healthcheck.services and see if we can escalate to monitor_user
+<img width="425" height="213" alt="image" src="https://github.com/user-attachments/assets/40365251-b98b-441f-8779-b017bb7a7c96" />
+This script should look familiar, we are creating a new /opt/dev/bin/ps file that runs on /bin/bash
+This is combining the canary and payload into one file. We will look for the /tmp/healthcheck_ps_id.txt file and make sure the id returns as monitor_user before we go ahead and run /tmp/monitorbash
+<img width="1182" height="172" alt="image" src="https://github.com/user-attachments/assets/eac4a00a-444b-462d-8439-63b94627c948" />  
+After checking the canary txt file we see that it indeed is being run by the monitor_user and we go ahead and run the monitorbash
+We double check that we escalated, and success we are monitor_user! Go grab that flag at /home/monitor_user/flag.txt
+Now I like to again check if sudo works as this is a very common way to escalate priveleges.
+<img width="334" height="72" alt="image" src="https://github.com/user-attachments/assets/b40438ad-0402-4433-9a85-749ba58aa17f" />
+Still doesn't work, but maybe if we login through SSH we could bypass the password requirement. So lets do the same thing we did earlier to SSH in as recon_user
+<img width="815" height="554" alt="image" src="https://github.com/user-attachments/assets/5ba830e9-6028-4761-966b-1367db87bb31" />  
+Successfully created the keys like we did earlier.
+<img width="1213" height="910" alt="image" src="https://github.com/user-attachments/assets/ad4ea18a-6e7f-489c-a6ba-a3e7175f06c6" />  
+Using the same commands from before we successfully SSH into the system as monitor_user. Now let's retry the sudo command
+<img width="1183" height="170" alt="image" src="https://github.com/user-attachments/assets/726e3fb6-a927-4d69-bd91-05095ff6fa64" />
+There we go! An easy win, we can run /usr/local/bin/deploy.sh as ops_user, lets see if we can modify it and run it.
+<img width="883" height="75" alt="image" src="https://github.com/user-attachments/assets/5ebe0843-4268-4e78-815f-1c24bf6e67bf" />
+Oh dang, we can't modify deploy.sh, however after looking at the script it's just running ./deploy_helper.sh so maybe we can just modify that shell script
+<img width="885" height="381" alt="image" src="https://github.com/user-attachments/assets/af05b9ae-cba0-419a-b09a-b9ff30483570" />  
+Success! I echoed a bit of code into the shell script which does the same attack as before, causing the vulnerable user to copy /bin/bash to the /tmp/ folder and changing it's permissions.
+I forgot to delete a previous mistake that created that file which is why I had to remove the previous file and rerun the script.
+As we can see we are now the ops_user, now only one user left to escalate to, root. Go grab that flag at /home/ops_user/flag.txt
+<img width="1189" height="216" alt="image" src="https://github.com/user-attachments/assets/0f53a1c5-a11d-4430-b77d-eddf57dfffa6" />
+Not so fast, looks like we haven't fully gotten into ops_user. Let's see if we can SSH into ourselves like we did before:
+<img width="1219" height="1013" alt="image" src="https://github.com/user-attachments/assets/0f39aade-ee1e-498b-8f45-65d68ae7e325" />
+We run the same SSH scripts from before to create our keys and login, and success! Let's make sure we have the right priveleges:
+<img width="1198" height="273" alt="image" src="https://github.com/user-attachments/assets/3091b99e-e9f5-4cfe-ba5f-940d1e697538" />
+Looks good! We have sudo priveleges as root to use the 'less' command which is one of the easiest privelege escalations as you can run code directly in the less binary.
+<img width="446" height="216" alt="image" src="https://github.com/user-attachments/assets/6eb876b2-5afc-46ff-b0ee-808c1ef680ff" />
+Here I create a blank file using the touch command at /tmp/rootbash
+Then I use sudo -n /usr/bin/less to open /tmp/rootbash
+Then without doing anything else I type !/bin/bash and this causes the less process to run a bash using root priveleges
+Success! We have root, go grab that flag at /root/flag.txt
+
+
+
+
+
+
+
+
+
+
+
 
 
 
