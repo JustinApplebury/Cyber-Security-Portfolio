@@ -1,4 +1,4 @@
-# Cyber Exercise Writeup: `<Challenge / Room Name>`
+# Cyber Exercise Writeup: `<TryHackMe / Jump>`
 
 ## BLUF
 
@@ -11,12 +11,12 @@ The final outcome was complete administrative compromise of the target system wi
 
 ## Executive Summary
 
-**Exercise Name:** `<Challenge / Room Name>`  
+**Exercise Name:** `<TryHackMe / Jump>` http://tryhackme.com/room/jump   
 **Platform / Environment:** TryHackMe  
 **Exercise Type:** CTF / Red Team Training Lab  
 **Primary Domain:** Linux Privilege Escalation / Service Misconfiguration  
-**Difficulty:** `<Easy / Medium / Hard>`  
-**Date Completed:** `<YYYY-MM-DD>`  
+**Difficulty:** `<Easy>`  
+**Date Completed:** `<2026-06-28>`  
 **Author:** Justin Applebury  
 **Classification / Handling:** Unclassified / Training Only
 
@@ -104,7 +104,7 @@ nmap -n -Pn -A -p- <TARGET_IP>
 ```
 
 <figure>
-<img width="1010" height="988" alt="image" src="https://github.com/user-attachments/assets/1cf176ca-a5bf-479e-8843-eccb66e06270" />
+<img width="1010" height="988" alt="image" src="https://github.com/user-attachments/assets/1cf176ca-a5bf-479e-8843-eccb66e06270" />  
 <figcaption>Figure 1. Nmap scan identifying exposed FTP and SSH services.</figcaption>
 </figure>
 
@@ -132,21 +132,21 @@ ftp <TARGET_IP>
 ```
 
 <figure>
-<img width="434" height="209" alt="image" src="https://github.com/user-attachments/assets/aeb53d98-a7ca-4d84-90b8-8d9dba6aa543" />
+<img width="434" height="209" alt="image" src="https://github.com/user-attachments/assets/aeb53d98-a7ca-4d84-90b8-8d9dba6aa543" />  
 <figcaption>Figure 2. Anonymous FTP login to the target service.</figcaption>
 </figure>
 
 FTP directory enumeration identified accessible folders and files.
 
 <figure>
-<img width="802" height="460" alt="image" src="https://github.com/user-attachments/assets/03fe7a08-2fc2-4ace-a591-179b7bccd979" />
+<img width="802" height="460" alt="image" src="https://github.com/user-attachments/assets/03fe7a08-2fc2-4ace-a591-179b7bccd979" />  
 <figcaption>Figure 3. FTP directory enumeration showing available folders.</figcaption>
 </figure>
 
 A `README.txt` file was retrieved from the FTP server.
 
 <figure>
-<img width="459" height="151" alt="image" src="https://github.com/user-attachments/assets/d5b494ae-3944-496a-91a5-be75d9846952" />
+<img width="459" height="151" alt="image" src="https://github.com/user-attachments/assets/d5b494ae-3944-496a-91a5-be75d9846952" />  
 <figcaption>Figure 4. Retrieved README indicating uploaded recon jobs are automatically processed.</figcaption>
 </figure>
 
@@ -171,21 +171,21 @@ EOF
 ```
 
 <figure>
-<img width="470" height="255" alt="image" src="https://github.com/user-attachments/assets/6e6e9fbd-e092-41db-9e56-5e855ba202b3" />
+<img width="470" height="255" alt="image" src="https://github.com/user-attachments/assets/6e6e9fbd-e092-41db-9e56-5e855ba202b3" />  
 <figcaption>Figure 5. Canary script prepared to validate FTP processor execution.</figcaption>
 </figure>
 
 The script was uploaded as `shell.sh`.
 
 <figure>
-<img width="794" height="440" alt="image" src="https://github.com/user-attachments/assets/bcb6dd47-744b-4990-9621-20a71a452dc3" />
+<img width="794" height="440" alt="image" src="https://github.com/user-attachments/assets/bcb6dd47-744b-4990-9621-20a71a452dc3" />  
 <figcaption>Figure 6. Canary script uploaded to the FTP incoming directory.</figcaption>
 </figure>
 
 The processor created `ftp_processor_id.txt`, confirming execution.
 
 <figure>
-<img width="805" height="150" alt="image" src="https://github.com/user-attachments/assets/4e3de3cb-f4c4-4053-aa7e-2380abc61fbd" />
+<img width="805" height="150" alt="image" src="https://github.com/user-attachments/assets/4e3de3cb-f4c4-4053-aa7e-2380abc61fbd" />  
 <figcaption>Figure 7. Canary output confirming execution as recon_user.</figcaption>
 </figure>
 
@@ -205,7 +205,7 @@ EOF
 ```
 
 <figure>
-<img width="615" height="147" alt="image" src="https://github.com/user-attachments/assets/14d01755-e61d-49fa-801d-8d64f972fe00" />
+<img width="615" height="147" alt="image" src="https://github.com/user-attachments/assets/14d01755-e61d-49fa-801d-8d64f972fe00" />  
 <figcaption>Figure 8. Reverse shell payload prepared for FTP processor execution.</figcaption>
 </figure>
 
@@ -216,14 +216,14 @@ nc -lnvp 4444
 ```
 
 <figure>
-<img width="377" height="50" alt="image" src="https://github.com/user-attachments/assets/1f33958b-271d-448f-9f8e-556b1eae8ac6" />
+<img width="377" height="50" alt="image" src="https://github.com/user-attachments/assets/1f33958b-271d-448f-9f8e-556b1eae8ac6" />  
 <figcaption>Figure 9. Netcat listener configured on port 4444.</figcaption>
 </figure>
 
 The payload was uploaded to the FTP server. When the automated processor executed it, a reverse shell was received as `recon_user`.
 
 <figure>
-<img width="798" height="255" alt="image" src="https://github.com/user-attachments/assets/d2b9dc5c-a31b-4198-8cc4-4c33e29c8005" />
+<img width="798" height="255" alt="image" src="https://github.com/user-attachments/assets/d2b9dc5c-a31b-4198-8cc4-4c33e29c8005" />  
 <figcaption>Figure 10. Reverse shell received from the target as recon_user.</figcaption>
 </figure>
 
@@ -240,7 +240,7 @@ stty rows 40 cols 120
 ```
 
 <figure>
-<img width="499" height="109" alt="image" src="https://github.com/user-attachments/assets/55a27988-4893-401f-b546-24dba3da4389" />
+<img width="499" height="109" alt="image" src="https://github.com/user-attachments/assets/55a27988-4893-401f-b546-24dba3da4389" />  
 <figcaption>Figure 11. Target-side PTY upgrade commands.</figcaption>
 </figure>
 
@@ -251,7 +251,7 @@ stty raw -echo; fg
 ```
 
 <figure>
-<img width="442" height="130" alt="image" src="https://github.com/user-attachments/assets/5beea941-3625-47a7-a30b-439b683c5ea5" />
+<img width="442" height="130" alt="image" src="https://github.com/user-attachments/assets/5beea941-3625-47a7-a30b-439b683c5ea5" />  
 <figcaption>Figure 12. Local terminal stabilization commands.</figcaption>
 </figure>
 
@@ -280,7 +280,7 @@ chmod 600 /home/recon_user/.ssh/authorized_keys
 ```
 
 <figure>
-<img width="806" height="209" alt="image" src="https://github.com/user-attachments/assets/2c324219-089e-4031-a3a8-5e1df38542f2" />
+<img width="806" height="209" alt="image" src="https://github.com/user-attachments/assets/2c324219-089e-4031-a3a8-5e1df38542f2" />  
 <figcaption>Figure 13. SSH key generation and authorized_keys setup for recon_user.</figcaption>
 </figure>
 
@@ -294,7 +294,7 @@ ssh -i /tmp/reconkey \
 ```
 
 <figure>
-<img width="772" height="461" alt="image" src="https://github.com/user-attachments/assets/c455095b-685d-4c18-8ff8-88fe811e7be1" />
+<img width="772" height="461" alt="image" src="https://github.com/user-attachments/assets/c455095b-685d-4c18-8ff8-88fe811e7be1" />  
 <figcaption>Figure 14. SSH login to localhost as recon_user using the generated key.</figcaption>
 </figure>
 
@@ -312,19 +312,19 @@ systemctl list-units --type=service 2>/dev/null
 ```
 
 <figure>
-<img width="470" height="82" alt="image" src="https://github.com/user-attachments/assets/d31279ba-945a-4f3f-b714-a374e0c5c735" />
+<img width="470" height="82" alt="image" src="https://github.com/user-attachments/assets/d31279ba-945a-4f3f-b714-a374e0c5c735" />  
 <figcaption>Figure 15. Initial local enumeration command set.</figcaption>
 </figure>
 
 The output identified several services and automation paths of interest.
 
 <figure>
-<img width="1211" height="454" alt="image" src="https://github.com/user-attachments/assets/53c18781-b6b9-4aa2-93e2-9a721d730dba" />
+<img width="1211" height="454" alt="image" src="https://github.com/user-attachments/assets/53c18781-b6b9-4aa2-93e2-9a721d730dba" />  
 <figcaption>Figure 16. Process and service enumeration output.</figcaption>
 </figure>
 
 <figure>
-<img width="1208" height="160" alt="image" src="https://github.com/user-attachments/assets/97aba54b-9889-4be0-b13d-18076edcf02e" />
+<img width="1208" height="160" alt="image" src="https://github.com/user-attachments/assets/97aba54b-9889-4be0-b13d-18076edcf02e" />  
 <figcaption>Figure 17. Systemd service/timer enumeration output.</figcaption>
 </figure>
 
@@ -337,7 +337,7 @@ One notable discovery was `healthcheck.service`.
 The healthcheck script was inspected and found to execute `ps` repeatedly.
 
 <figure>
-<img width="416" height="190" alt="image" src="https://github.com/user-attachments/assets/c8f2cf25-8713-4f3f-8d45-43a8d66ffad7" />
+<img width="416" height="190" alt="image" src="https://github.com/user-attachments/assets/c8f2cf25-8713-4f3f-8d45-43a8d66ffad7" />  
 <figcaption>Figure 18. healthcheck script inspection.</figcaption>
 </figure>
 
@@ -348,7 +348,7 @@ Environment=PATH=/opt/dev/bin:/usr/local/bin:/usr/bin
 ```
 
 <figure>
-<img width="537" height="210" alt="image" src="https://github.com/user-attachments/assets/9a537983-40ec-42e9-b073-9a3aef0202be" />
+<img width="537" height="210" alt="image" src="https://github.com/user-attachments/assets/9a537983-40ec-42e9-b073-9a3aef0202be" />  
 <figcaption>Figure 19. healthcheck.service configuration showing unsafe PATH order.</figcaption>
 </figure>
 
@@ -357,7 +357,7 @@ Because `/opt/dev/bin` appeared before standard binary directories, a malicious 
 At this stage, direct execution and permission changes were not immediately available, so further enumeration was performed.
 
 <figure>
-<img width="735" height="82" alt="image" src="https://github.com/user-attachments/assets/26d0c3bf-b924-4eb4-8390-bfcbde7cc22a" />
+<img width="735" height="82" alt="image" src="https://github.com/user-attachments/assets/26d0c3bf-b924-4eb4-8390-bfcbde7cc22a" />  
 <figcaption>Figure 20. Initial permission issue while attempting the PATH hijack.</figcaption>
 </figure>
 
@@ -377,14 +377,14 @@ sed -n '1,240p' /opt/recon/scan_uploads.sh
 ```
 
 <figure>
-<img width="962" height="233" alt="image" src="https://github.com/user-attachments/assets/2aaf4c8a-7f80-474e-bf3e-7c0d9b65dd86" />
+<img width="962" height="233" alt="image" src="https://github.com/user-attachments/assets/2aaf4c8a-7f80-474e-bf3e-7c0d9b65dd86" />  
 <figcaption>Figure 21. /opt/dev ownership and backup.sh discovery.</figcaption>
 </figure>
 
 The enumeration identified `/opt/dev/backup.sh`.
 
 <figure>
-<img width="519" height="87" alt="image" src="https://github.com/user-attachments/assets/7d047c8d-e852-4b3c-8311-b5bcc0959ff0" />
+<img width="519" height="87" alt="image" src="https://github.com/user-attachments/assets/7d047c8d-e852-4b3c-8311-b5bcc0959ff0" />  
 <figcaption>Figure 22. backup.sh contents showing backup behavior.</figcaption>
 </figure>
 
@@ -399,14 +399,14 @@ echo 'id > /tmp/dev_backup_id.txt' >> /opt/dev/backup.sh
 ```
 
 <figure>
-<img width="857" height="20" alt="image" src="https://github.com/user-attachments/assets/2559a024-e0a4-43e1-abbe-c42200a207fe" />
+<img width="857" height="20" alt="image" src="https://github.com/user-attachments/assets/2559a024-e0a4-43e1-abbe-c42200a207fe" />  
 <figcaption>Figure 23. Canary appended to backup.sh.</figcaption>
 </figure>
 
 The canary output confirmed execution as `dev_user`.
 
 <figure>
-<img width="728" height="63" alt="image" src="https://github.com/user-attachments/assets/5f802272-9e45-4ddc-98be-22ad89b0e94f" />
+<img width="728" height="63" alt="image" src="https://github.com/user-attachments/assets/5f802272-9e45-4ddc-98be-22ad89b0e94f" />  
 <figcaption>Figure 24. Canary output proving backup.sh execution as dev_user.</figcaption>
 </figure>
 
@@ -419,7 +419,7 @@ echo 'cp /bin/bash /tmp/devbash; chmod 4755 /tmp/devbash' >> /opt/dev/backup.sh
 ```
 
 <figure>
-<img width="1523" height="503" alt="image" src="https://github.com/user-attachments/assets/361c6666-7f5f-41fa-b039-c4e44286a961" />
+<img width="1523" height="503" alt="image" src="https://github.com/user-attachments/assets/361c6666-7f5f-41fa-b039-c4e44286a961" />  
 <figcaption>Figure 25. Payload added to create dev_user SUID Bash.</figcaption>
 </figure>
 
@@ -430,7 +430,7 @@ Once `/tmp/devbash` was created, it was executed with preserved privileges:
 ```
 
 <figure>
-<img width="1138" height="132" alt="image" src="https://github.com/user-attachments/assets/03e5cf94-f60d-49f6-9c04-9c6b2c902947" />
+<img width="1138" height="132" alt="image" src="https://github.com/user-attachments/assets/03e5cf94-f60d-49f6-9c04-9c6b2c902947" />  
 <figcaption>Figure 26. devbash execution confirming dev_user privilege escalation.</figcaption>
 </figure>
 
@@ -462,7 +462,7 @@ chmod +x /opt/dev/bin/ps
 ```
 
 <figure>
-<img width="425" height="213" alt="image" src="https://github.com/user-attachments/assets/40365251-b98b-441f-8779-b017bb7a7c96" />
+<img width="425" height="213" alt="image" src="https://github.com/user-attachments/assets/40365251-b98b-441f-8779-b017bb7a7c96" />  
 <figcaption>Figure 27. Malicious ps wrapper staged in /opt/dev/bin.</figcaption>
 </figure>
 
@@ -473,7 +473,7 @@ When `healthcheck.service` executed, it ran the malicious `ps` wrapper as `monit
 ```
 
 <figure>
-<img width="1182" height="172" alt="image" src="https://github.com/user-attachments/assets/eac4a00a-444b-462d-8439-63b94627c948" />
+<img width="1182" height="172" alt="image" src="https://github.com/user-attachments/assets/eac4a00a-444b-462d-8439-63b94627c948" />  
 <figcaption>Figure 28. healthcheck canary and monitorbash output confirming monitor_user execution.</figcaption>
 </figure>
 
@@ -490,7 +490,7 @@ cat /home/monitor_user/flag.txt
 An initial sudo check from the effective UID shell did not reveal the needed path.
 
 <figure>
-<img width="334" height="72" alt="image" src="https://github.com/user-attachments/assets/b40438ad-0402-4433-9a85-749ba58aa17f" />
+<img width="334" height="72" alt="image" src="https://github.com/user-attachments/assets/b40438ad-0402-4433-9a85-749ba58aa17f" />  
 <figcaption>Figure 29. Initial sudo check from effective monitor_user context.</figcaption>
 </figure>
 
@@ -507,7 +507,7 @@ chmod 600 /home/monitor_user/.ssh/authorized_keys
 ```
 
 <figure>
-<img width="815" height="554" alt="image" src="https://github.com/user-attachments/assets/5ba830e9-6028-4761-966b-1367db87bb31" />
+<img width="815" height="554" alt="image" src="https://github.com/user-attachments/assets/5ba830e9-6028-4761-966b-1367db87bb31" />  
 <figcaption>Figure 30. SSH key setup for monitor_user.</figcaption>
 </figure>
 
@@ -521,7 +521,7 @@ ssh -i /tmp/monkey \
 ```
 
 <figure>
-<img width="1213" height="910" alt="image" src="https://github.com/user-attachments/assets/ad4ea18a-6e7f-489c-a6ba-a3e7175f06c6" />
+<img width="1213" height="910" alt="image" src="https://github.com/user-attachments/assets/ad4ea18a-6e7f-489c-a6ba-a3e7175f06c6" />  
 <figcaption>Figure 31. SSH login as monitor_user.</figcaption>
 </figure>
 
@@ -532,7 +532,7 @@ sudo -n -l
 ```
 
 <figure>
-<img width="1183" height="170" alt="image" src="https://github.com/user-attachments/assets/726e3fb6-a927-4d69-bd91-05095ff6fa64" />
+<img width="1183" height="170" alt="image" src="https://github.com/user-attachments/assets/726e3fb6-a927-4d69-bd91-05095ff6fa64" />  
 <figcaption>Figure 32. sudo -l revealing monitor_user can run deploy.sh as ops_user.</figcaption>
 </figure>
 
@@ -556,7 +556,7 @@ cat /usr/local/bin/deploy.sh
 The script changed into `/opt/app` and executed `./deploy_helper.sh`.
 
 <figure>
-<img width="883" height="75" alt="image" src="https://github.com/user-attachments/assets/5ebe0843-4268-4e78-815f-1c24bf6e67bf" />
+<img width="883" height="75" alt="image" src="https://github.com/user-attachments/assets/5ebe0843-4268-4e78-815f-1c24bf6e67bf" />  
 <figcaption>Figure 33. deploy.sh inspection and write restriction.</figcaption>
 </figure>
 
@@ -577,14 +577,14 @@ sudo -n -u ops_user /usr/local/bin/deploy.sh
 ```
 
 <figure>
-<img width="885" height="381" alt="image" src="https://github.com/user-attachments/assets/af05b9ae-cba0-419a-b09a-b9ff30483570" />
+<img width="885" height="381" alt="image" src="https://github.com/user-attachments/assets/af05b9ae-cba0-419a-b09a-b9ff30483570" />  
 <figcaption>Figure 34. deploy_helper.sh modification to create ops_user SUID Bash.</figcaption>
 </figure>
 
 The resulting shell provided effective `ops_user` privileges.
 
 <figure>
-<img width="1189" height="216" alt="image" src="https://github.com/user-attachments/assets/0f53a1c5-a11d-4430-b77d-eddf57dfffa6" />
+<img width="1189" height="216" alt="image" src="https://github.com/user-attachments/assets/0f53a1c5-a11d-4430-b77d-eddf57dfffa6" />  
 <figcaption>Figure 35. ops_user effective shell validation.</figcaption>
 </figure>
 
@@ -616,7 +616,7 @@ ssh -i /tmp/opskey \
 ```
 
 <figure>
-<img width="1219" height="1013" alt="image" src="https://github.com/user-attachments/assets/0f39aade-ee1e-498b-8f45-65d68ae7e325" />
+<img width="1219" height="1013" alt="image" src="https://github.com/user-attachments/assets/0f39aade-ee1e-498b-8f45-65d68ae7e325" />  
 <figcaption>Figure 36. SSH key setup and login as ops_user.</figcaption>
 </figure>
 
@@ -627,7 +627,7 @@ sudo -n -l
 ```
 
 <figure>
-<img width="1198" height="273" alt="image" src="https://github.com/user-attachments/assets/3091b99e-e9f5-4cfe-ba5f-940d1e697538" />
+<img width="1198" height="273" alt="image" src="https://github.com/user-attachments/assets/3091b99e-e9f5-4cfe-ba5f-940d1e697538" />  
 <figcaption>Figure 37. sudo -l revealing ops_user can run less as root.</figcaption>
 </figure>
 
@@ -656,7 +656,7 @@ Inside `less`, the following shell escape was entered:
 ```
 
 <figure>
-<img width="446" height="216" alt="image" src="https://github.com/user-attachments/assets/6eb876b2-5afc-46ff-b0ee-808c1ef680ff" />
+<img width="446" height="216" alt="image" src="https://github.com/user-attachments/assets/6eb876b2-5afc-46ff-b0ee-808c1ef680ff" />  
 <figcaption>Figure 38. Root shell via sudo less shell escape.</figcaption>
 </figure>
 
