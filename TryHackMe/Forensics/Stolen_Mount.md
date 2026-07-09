@@ -1,4 +1,4 @@
-# Cyber Exercise Writeup: `<Challenge / Exercise Name>`
+# Cyber Exercise Writeup: [TryHackMe | Stolen Mount](https://tryhackme.com/room/hfb1stolenmount)
 
 > **Authorized Training Environment:** This writeup documents activity conducted within an authorized cyber training or lab environment. No real-world systems, networks, or data were targeted.
 
@@ -30,14 +30,14 @@ Aim for 3–5 sentences. Avoid command details, flag values, and step-by-step na
 
 | Field                       | Details                                                                                                              |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Exercise Name**           | `<Challenge Name>`                                                                                                   |
-| **Platform / Environment**  | `<TryHackMe / Hack The Box / CyberDefenders / DoD Lab / Internal Exercise>`                                          |
-| **Exercise Type**           | `<Red Team / Blue Team / Purple Team / SOC Investigation / Forensics / Malware Analysis / CTF>`                      |
-| **Primary Domain**          | `<Network Security / Web Exploitation / Endpoint Analysis / Threat Hunting / Incident Response / Digital Forensics>` |
-| **Difficulty**              | `<Easy / Medium / Hard>`                                                                                             |
-| **Assessment Outcome**      | `<Completed / Partially Completed / Objective Not Achieved>`                                                         |
-| **Date Completed**          | `<YYYY-MM-DD>`                                                                                                       |
-| **Author**                  | Justin Applebury                                                                                                     |
+| **Exercise Name**           | `Stolen Mount`                                                                                                   |
+| **Platform / Environment**  | `TryHackMe`                                          |
+| **Exercise Type**           | `Forensics`                      |
+| **Primary Domain**          | `Network Security / Threat Hunting / Incident Response / Digital Forensics` |
+| **Difficulty**              | `Easy`                                                                                             |
+| **Assessment Outcome**      | `Completed`                                                         |
+| **Date Completed**          | `2026-07-06`                                                                                                       |
+| **Author**                  | `Justin Applebury`                                                                                                     |
 | **Handling / Distribution** | `Public Training Content`                                                                                            |
 
 ### Mission Relevance
@@ -56,7 +56,7 @@ Focus on:
 Keep this to one short paragraph.
 -->
 
-> This exercise reinforced skills relevant to `<defensive cyberspace operations / cyber intelligence / incident response / threat hunting / network defense>`, including `<2–4 major skills practiced>`. The activity also provided practical experience analyzing adversary behavior, validating security weaknesses, preserving technical evidence, and translating technical observations into actionable defensive findings.
+> This exercise reinforced skills relevant to `Network Security / Threat Hunting / Incident Response / Digital Forensics `, including `packet/protocol analysis, decoding, hash cracking, NFSv4 analysis`. The activity also provided practical experience analyzing adversary behavior, validating security weaknesses, preserving technical evidence, and translating technical observations into actionable defensive findings.
 
 ---
 
@@ -66,21 +66,18 @@ Keep this to one short paragraph.
 
 | Field                       | Details                                                                               |
 | --------------------------- | ------------------------------------------------------------------------------------- |
-| **Target System / Dataset** | `<IP, hostname, PCAP, memory image, disk image, log source, or application>`          |
-| **Starting Access**         | `<Unauthenticated / Standard User / Analyst Access / Provided Evidence>`              |
-| **Authorized Actions**      | `<Enumeration, exploitation, log analysis, malware analysis, etc.>`                   |
-| **Constraints**             | `<Tool restrictions, time limits, prohibited actions, or exercise limitations>`       |
-| **Success Criteria**        | `<Root access, flag recovery, incident reconstruction, malware identification, etc.>` |
+| **Target System / Dataset** | `challenge.pcapng`          |
+| **Starting Access**         | `Provided Evidence`              |
+| **Authorized Actions**      | `log analysis`                   |
+| **Constraints**             | `Only access to .pcapng file`       |
+| **Success Criteria**        | `flag recovery` |
 
 ### Objectives
 
-* Identify the exposed attack surface or available evidence.
-* Analyze vulnerabilities, misconfigurations, malicious activity, or anomalous behavior.
-* Determine the attack path, investigative timeline, or root cause.
-* Achieve the authorized technical objectives of the exercise.
-* Preserve relevant commands, artifacts, logs, and evidence.
-* Identify defensive detection and mitigation opportunities.
-* Map significant activity to applicable cybersecurity frameworks.
+* An intruder has infiltrated our network and targeted the NFS server where the backup files are stored.
+* A classified secret was accessed and stolen.
+* The only trace left behind is a packet capture (PCAP) file recorded during the incident.
+* Your mission, should you accept it, is to discover the contents of the stolen data.
 
 ---
 
@@ -88,13 +85,13 @@ Keep this to one short paragraph.
 
 | Field                        | Details                                                                             |
 | ---------------------------- | ----------------------------------------------------------------------------------- |
-| **Target / Evidence Source** | `<Target IP, hostname, log source, or evidence file>`                               |
-| **Analyst System**           | `<Kali Linux / Ubuntu / Windows / REMnux / Security Onion>`                         |
-| **Target Operating System**  | `<Linux / Windows / Unknown / N/A>`                                                 |
-| **Network Environment**      | `<Lab VPN / Local Range / Cloud Range / Offline Analysis>`                          |
-| **Primary Tools Used**       | `<Nmap, Burp Suite, Wireshark, Splunk, Volatility, Velociraptor, etc.>`             |
-| **Access Level at Start**    | `<Unauthenticated / User / Analyst / Administrator>`                                |
-| **Final Access / Outcome**   | `<User / Root / Administrator / Evidence Recovered / Incident Reconstructed / N/A>` |
+| **Target / Evidence Source** | `challenge.pcapng`                               |
+| **Analyst System**           | `Kali Linux`                         |
+| **Target Operating System**  | `Linux`                                                 |
+| **Network Environment**      | `Offline Analysis`                          |
+| **Primary Tools Used**       | `Wireshark`             |
+| **Access Level at Start**    | `Analyst`                                |
+| **Final Access / Outcome**   | `Evidence Recovered / Incident Reconstructed` |
 
 ---
 
@@ -120,6 +117,8 @@ Summarize the full progression in a single line.
 
 ```text
 <Reconnaissance / Evidence Source>
+Initially looking at the pcap we see a TCP connection between two IPs and no other traffic, so any other traffic was conveniently filtered off the pcap
+
         ↓
 <Initial Finding>
         ↓
