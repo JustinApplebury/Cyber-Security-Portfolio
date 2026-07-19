@@ -18,7 +18,7 @@ Recommended structure:
 Aim for 3–5 sentences. Avoid command details, flag values, and step-by-step narration.
 -->
 
-> `<Challenge Name>` demonstrated how `<primary vulnerability, misconfiguration, malicious behavior, or investigative problem>` could lead to `<operational or security impact>`. Analysis identified `<initial finding or entry point>`, which enabled or revealed `<key progression in the attack or investigation>`. The exercise concluded with `<final access level, investigation result, recovered evidence, or objective achieved>`. From a defensive perspective, the activity highlights the importance of `<primary security control, detection opportunity, or mitigation>`.
+> `Stolen Mount` demonstrated how `a lack of strict input validation` could lead to `<operational or security impact>`. Analysis identified `<initial finding or entry point>`, which enabled or revealed `<key progression in the attack or investigation>`. The exercise concluded with `<final access level, investigation result, recovered evidence, or objective achieved>`. From a defensive perspective, the activity highlights the importance of `<primary security control, detection opportunity, or mitigation>`.
 
 ### Example BLUF
 
@@ -105,9 +105,11 @@ Use severity only when it adds value. Do not assign Critical severity merely bec
 
 | ID   | Finding                | Severity                                  | Security / Operational Impact | Evidence                          |
 | ---- | ---------------------- | ----------------------------------------- | ----------------------------- | --------------------------------- |
-| F-01 | `<Primary finding>`    | `<Info / Low / Medium / High / Critical>` | `<Why it mattered>`           | `<Section or artifact reference>` |
+| F-01 | `The Packet Capture showed NFSv4 communication between attacker-IP and the server-IP over TCP port 2049`    | `High` | `We have possible intrusion and we need to find out what they accessed and possibly exfiltrated`           | `<Section or artifact reference>` |
 | F-02 | `<Secondary finding>`  | `<Info / Low / Medium / High / Critical>` | `<Why it mattered>`           | `<Section or artifact reference>` |
 | F-03 | `<Additional finding>` | `<Info / Low / Medium / High / Critical>` | `<Why it mattered>`           | `<Section or artifact reference>` |
+| F-04 | `<Secondary finding>`  | `<Info / Low / Medium / High / Critical>` | `<Why it mattered>`           | `<Section or artifact reference>` |
+| F-05 | `<Additional finding>` | `<Info / Low / Medium / High / Critical>` | `<Why it mattered>`           | `<Section or artifact reference>` |
 
 ### Attack or Investigation Path
 
